@@ -1,0 +1,32 @@
+from flask import Flask
+from flask_login import LoginManager
+from lib.utils import load_secret_key
+
+def create_app():
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = load_secret_key()
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+
+    # register the database
+    from .models import db
+    db.init_app(app)
+
+    # register the various pages
+    from .register import register_page
+    app.register_blueprint(register_page, url_prefix="/")
+
+    from .login_logout import login_page, logout_page
+    app.register_blueprint(login_page, url_prefix="/")
+    app.register_blueprint(logout_page, url_prefix="/")
+
+    from .dashboard import dashboard_page
+    app.register_blueprint(dashboard_page, url_prefix="/")
+
+    print_routes(app)
+
+    return app
+
+def print_routes(app):
+    print("All Routes:")
+    for rule in app.url_map.iter_rules():
+        print(f"{rule.endpoint}: {rule.methods} {rule}")

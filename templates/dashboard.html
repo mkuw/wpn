@@ -8,7 +8,7 @@
 <body>
     <h1>Welcome to the dashboard, {{ username }}!</h1>
 
-    <form action="{{ url_for('logout') }}" method="post">
+    <form action="{{ url_for('logout_page.logout') }}" method="post">
         <button type="submit">Logout</button>
     </form>
 </body>

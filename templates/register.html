@@ -16,7 +16,7 @@
             </ul>
         {% endif %}
     {% endwith %}
-    <form method="POST" action="{{ url_for('register') }}">
+    <form method="POST" action="{{ url_for('register_page.register') }}">
         {{ form.hidden_tag() }}
         <label for="invite_code">Invite Code:</label>
         {{ form.invite_code() }}

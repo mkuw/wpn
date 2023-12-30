@@ -7,14 +7,7 @@ from wtforms.validators import InputRequired
 from passlib.hash import sha256_crypt
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
-def load_secret_key(filename='secret_key.txt'):
-    try:
-        with open(filename, 'r') as file:
-            secret_key = file.read().strip()
-            return secret_key
-    except FileNotFoundError:
-        print(f"Error: Secret key file '{filename}' not found.")
-        return None
+from lib.utils import load_secret_key
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = load_secret_key()
