@@ -16,3 +16,11 @@ class InviteCode(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(50), unique=True, nullable=False)
 
+class Entry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', backref=db.backref('competitions', lazy=True))
+    date = db.Column(db.Date, nullable=False)
+    w  = db.Column(db.Integer, nullable=False)
+    p = db.Column(db.Integer, nullable=False)
+    n = db.Column(db.Integer, nullable=False)

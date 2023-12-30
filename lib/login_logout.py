@@ -13,9 +13,9 @@ logout_page = Blueprint("logout_page", __name__, template_folder="../templates")
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[InputRequired()])
     password = PasswordField("Password", validators=[InputRequired()])
-    remember = BooleanField('Remember me')
+    remember = BooleanField("Remember me")
 
-@login_page.route('/login', methods=['GET', 'POST'])
+@login_page.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()
 
@@ -24,18 +24,18 @@ def login():
 
         if user and sha256_crypt.verify(form.password.data, user.password):
             login_user(user, remember=form.remember.data)
-            flash('Login successful!', 'success')
-            return redirect(url_for('dashboard_page.dashboard'))  # Update with your dashboard route
+            flash("Login successful!", "success")
+            return redirect(url_for("insert_page.insert"))
 
-        flash('Invalid username or password', 'danger')
+        flash("Invalid username or password", "danger")
 
-    return render_template('login.html', form=form)
+    return render_template("login.html", form=form)
 
-@logout_page.route('/logout', methods=['GET', 'POST'])
+@logout_page.route("/logout", methods=["GET", "POST"])
 @login_required
 def logout():
-    if request.method == 'POST':
+    if request.method == "POST":
         logout_user()
-        flash('You have been logged out', 'success')
-        return redirect(url_for('login_page.login'))
-    return render_template('logout.html')
+        flash("You have been logged out", "success")
+        return redirect(url_for("login_page.login"))
+    return render_template("logout.html")

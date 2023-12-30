@@ -10,11 +10,11 @@ from .utils import is_valid_invite_code, remove_invite_code
 register_page = Blueprint("register_page", __name__, template_folder="../templates")
 
 class RegistrationForm(FlaskForm):
-    invite_code = StringField('Invite Code', validators=[InputRequired()])
-    username = StringField('Username', validators=[InputRequired()])
-    password = PasswordField('Password', validators=[InputRequired()])
+    invite_code = StringField("Invite Code", validators=[InputRequired()])
+    username = StringField("Username", validators=[InputRequired()])
+    password = PasswordField("Password", validators=[InputRequired()])
 
-@register_page.route('/register', methods=['GET', 'POST'])
+@register_page.route("/register", methods=["GET", "POST"])
 def register():
     form = RegistrationForm()
 
@@ -30,9 +30,9 @@ def register():
             # Remove the used invite code from the database
             remove_invite_code(form.invite_code.data, db)
 
-            flash('Your account has been created!', 'success')
+            flash("Your account has been created!", "success")
             return redirect(url_for("login_page.login"))
         else:
-            flash('Invalid invite code', 'danger')
+            flash("Invalid invite code", "danger")
 
-    return render_template('register.html', form=form)
+    return render_template("register.html", form=form)

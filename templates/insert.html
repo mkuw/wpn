@@ -1,0 +1,50 @@
+<!-- insert.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inserisci i risultati</title>
+</head>
+<body>
+    <h1>Ciao, {{ username }}!</h1>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('insert_page.insert') }}">
+        {{ form.csrf_token }}
+
+        <label for="{{ form.date.id }}">Data:</label>
+        {{ form.date }}
+        <br>
+
+        <label for="{{ form.w.id }}">W:</label>
+        {{ form.w }}
+        <br>
+
+        <label for="{{ form.p.id }}">P:</label>
+        {{ form.p }}
+        <br>
+
+        <label for="{{ form.n.id }}">N:</label>
+        {{ form.n }}
+        <br>
+
+        {{ form.submit }}
+    </form>
+
+    <a href="{{ url_for('status_page.status') }}"><button>Vai ai risultati</button></a>
+
+    <a href="{{ url_for('logout_page.logout') }}"><button>Log Out</button></a>
+</body>
+</html>
+

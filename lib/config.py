@@ -3,8 +3,8 @@ from lib.utils import load_secret_key
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = load_secret_key()
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+    app.config["SECRET_KEY"] = load_secret_key()
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
 
     # register the database
     from .models import db
@@ -18,8 +18,11 @@ def create_app():
     app.register_blueprint(login_page, url_prefix="/")
     app.register_blueprint(logout_page, url_prefix="/")
 
-    from .dashboard import dashboard_page
-    app.register_blueprint(dashboard_page, url_prefix="/")
+    from .insert import insert_page
+    app.register_blueprint(insert_page, url_prefix="/")
+
+    from .status import status_page
+    app.register_blueprint(status_page, url_prefix="/")
 
     print_routes(app)
 
