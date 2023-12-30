@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_login import LoginManager
 from lib.utils import load_secret_key
 
 def create_app():

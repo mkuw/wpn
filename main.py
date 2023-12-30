@@ -1,11 +1,19 @@
 #!/usr/bin/python
 
-from flask_login import LoginManager
+from flask import redirect, url_for
+from flask_login import LoginManager, current_user
 
 from lib.models import db, User
 from lib.config import create_app
 
 app = create_app()
+
+@app.route('/')
+def default_page():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard_page.dashboard'))
+    else:
+        return redirect(url_for('login_page.login'))
 
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
