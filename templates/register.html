@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <h2>Register</h2>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li style="color: {% if 'danger' in message %}red{% else %}green{% endif %}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <form method="POST" action="{{ url_for('register') }}">
+        {{ form.hidden_tag() }}
+        <label for="invite_code">Invite Code:</label>
+        {{ form.invite_code() }}
+        <br>
+        <label for="username">Username:</label>
+        {{ form.username() }}
+        <br>
+        <label for="password">Password:</label>
+        {{ form.password() }}
+        <br>
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>
