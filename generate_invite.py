@@ -1,8 +1,8 @@
-# invite.py
+#!/usr/bin/python
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import secrets
-import sys
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'  # Update with your actual database URI

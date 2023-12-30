@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 from flask_login import LoginManager
 
 from lib.models import db, User
