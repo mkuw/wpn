@@ -7,25 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         .container {
-            display: flex;
             margin-bottom: 10px;
             margin-top: 10px;
-        }
-
-        .left-column {
-            flex: 1;
-            width: 50%;
-            margin-right: 5px;
-        }
-
-        .right-column {
-            flex: 2;
-            width: 50%;
-            margin-left: 5px;
-        }
-
-        .total-table {
-            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -33,32 +16,27 @@
     <h1>{{ title }}</h1>
     <h2>{{ start_date }} &mdash; {{ end_date}}</h2>
 
-     <div class="container">
-        <!-- Left column with big table -->
-        <div class="left-column">
-            {% include 'status_table.html' %}
-        </div>
-
-        <!-- Right column with total table and plot -->
-        <div class="right-column">
-            <div class="total-table">
-                <table border="1">
-                    <tr>
-                        <th>Username</th>
-                        <th>Punteggio</th>
-                    </tr>
-                    {% for row in total_table_data %}
-                        <tr>
-                            <td>{{ row[1] }}</td>
-                            <td>{{ row[0] }}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
-            <div>
-                {{ plot_html | safe }}
-            </div>
-        </div>
+    <div>
+         <div class="container">
+             <table border="1">
+                 <tr>
+                     <th>Contendente</th>
+                     <th>Punteggio</th>
+                 </tr>
+                 {% for row in total_table_data %}
+                     <tr>
+                         <td>{{ row[1] }}</td>
+                         <td>{{ row[0] }}</td>
+                     </tr>
+                 {% endfor %}
+             </table>
+         </div>
+         <div class="container">
+             {% include 'status_table.html' %}
+         </div>
+         <div class="container">
+             {{ plot_html | safe }}
+         </div>
     </div>
 
     <a href="{{ url_for('insert_page.insert') }}"><button>Inserisci</button></a>
