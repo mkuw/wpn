@@ -24,8 +24,6 @@ def create_app():
     from .status import status_page
     app.register_blueprint(status_page, url_prefix="/")
 
-    print_routes(app)
-
     return app
 
 def print_routes(app):
