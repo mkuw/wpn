@@ -16,8 +16,9 @@ def default_page():
         return redirect(url_for("login_page.login"))
 
 login_manager = LoginManager(app)
-login_manager.login_view = "login"
+login_manager.login_view = "login_page.login"
 login_manager.login_message_category = "info"
+login_manager.session_protection = "strong"
 
 @login_manager.user_loader
 def load_user(user_id):

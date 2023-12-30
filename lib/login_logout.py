@@ -13,7 +13,7 @@ logout_page = Blueprint("logout_page", __name__, template_folder="../templates")
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[InputRequired()])
     password = PasswordField("Password", validators=[InputRequired()])
-    remember = BooleanField("Remember me")
+    remember = BooleanField("Ricordami")
 
 @login_page.route("/login", methods=["GET", "POST"])
 def login():
@@ -24,10 +24,10 @@ def login():
 
         if user and sha256_crypt.verify(form.password.data, user.password):
             login_user(user, remember=form.remember.data)
-            flash("Login successful!", "success")
+            flash("Log in effettuato con successo", "success")
             return redirect(url_for("insert_page.insert"))
 
-        flash("Invalid username or password", "danger")
+        flash("Username o password sbagliati", "danger")
 
     return render_template("login.html", form=form)
 
@@ -36,6 +36,6 @@ def login():
 def logout():
     if request.method == "POST":
         logout_user()
-        flash("You have been logged out", "success")
+        flash("Log out effettuato con successo", "success")
         return redirect(url_for("login_page.login"))
     return render_template("logout.html")

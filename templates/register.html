@@ -18,7 +18,7 @@
     {% endwith %}
     <form method="POST" action="{{ url_for('register_page.register') }}">
         {{ form.hidden_tag() }}
-        <label for="invite_code">Invite Code:</label>
+        <label for="invite_code">Codice invito (chiedere a Mikelo):</label>
         {{ form.invite_code() }}
         <br>
         <label for="username">Username:</label>
@@ -27,7 +27,7 @@
         <label for="password">Password:</label>
         {{ form.password() }}
         <br>
-        <button type="submit">Register</button>
+        <button type="submit">Registrati</button>
     </form>
 </body>
 </html>
