@@ -87,8 +87,22 @@ def status():
                 row_colors.append("good")
             else:
                 row_colors.append("normal")
-            multiplier = 1.0
+
             total = w + p + n
+            row.append(total)
+            row_colors.append("normal")
+
+            key = day.strftime("%d/%m/%Y")
+            if key in season.multipliers:
+                multiplier = season.multipliers[key]
+            else:
+                multiplier = 1.0
+            if multiplier > 1.0:
+                row_colors.append("bad")
+            else:
+                row_colors.append("normal")
+            row.append(multiplier)
+
             if total == 24:
                 row_colors.append("bad")
             else:

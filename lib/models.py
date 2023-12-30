@@ -31,6 +31,13 @@ class Season(db.Model):
     title = db.Column(db.String(255), nullable=False)
     start_date = db.Column(db.Date, nullable=False)
     end_date = db.Column(db.Date, nullable=False)
+    multipliers = db.Column(db.JSON)
+
+    def __init__(self, title, start_date, end_date, multipliers=None):
+        self.title = title
+        self.start_date = start_date
+        self.end_date = end_date
+        self.multipliers = multipliers or {}
 
     @staticmethod
     def get_current_season():
@@ -43,3 +50,6 @@ def get_entries_for_season(season):
 
 def get_user_by_id(user_id):
     return User.query.get(int(user_id))
+
+def get_season_by_title(season_title):
+    return Season.query.filter_by(title=season_title).first()
