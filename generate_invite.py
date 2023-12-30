@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 import secrets
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'  # Update with your actual database URI
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 db = SQLAlchemy(app)
 
 # Define the InviteCode model
