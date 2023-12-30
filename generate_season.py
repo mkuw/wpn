@@ -11,8 +11,8 @@ db.init_app(app)
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-        test_season = Season(title="Test Season",
-            start_date=datetime.datetime(2023, 12, 1).date(),
+        test_season = Season(title="Stagione di prova",
+            start_date=datetime.datetime(2023, 12, 27).date(),
             end_date=datetime.datetime(2023, 12, 31).date())
         db.session.add(test_season)
         db.session.commit()

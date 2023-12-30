@@ -1,0 +1,36 @@
+<!-- status_table.html -->
+<style>
+    .red-cell {
+        background-color: #ffcccc;
+    }
+    .green-cell {
+        background-color: #ccffcc;
+    }
+</style>
+
+<!-- Table header -->
+<table border="1">
+    <tr>
+        <th>Data</th>
+        <th>Username</th>
+        <th>W</th>
+        <th>P</th>
+        <th>N</th>
+        <th>Totale</th>
+    </tr>
+    <!-- Table rows -->
+    {% for row in table_data %}
+        {% set outer_loop = loop %}
+        <tr>
+            {% for cell in row %}
+                {% if table_colors[outer_loop.index0][loop.index0] == "bad" %}
+                    <td class="red-cell">{{ cell }}</td>
+                {% elif table_colors[outer_loop.index0][loop.index0] == "good" %}
+                    <td class="green-cell">{{ cell }}</td>
+                {% else %}
+                    <td>{{ cell }}</td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>

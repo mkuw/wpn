@@ -5,17 +5,63 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Competition Status</title>
+    <style>
+        .container {
+            display: flex;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+
+        .left-column {
+            flex: 1;
+            width: 50%;
+        }
+
+        .right-column {
+            flex: 2;
+            width: 50%;
+        }
+
+        .total-table {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Competition Status</h1>
+    <h1>{{ title }}</h1>
+    <h2>{{ start_date }} &mdash; {{ end_date}}</h2>
 
-    {% include 'status_table.html' %}
+     <div class="container">
+        <!-- Left column with big table -->
+        <div class="left-column">
+            {% include 'status_table.html' %}
+        </div>
 
-    <!-- Button to go to the insert page -->
-    <a href="{{ url_for('insert_page.insert') }}"><button>Go to Insert</button></a>
+        <!-- Right column with total table and plot -->
+        <div class="right-column">
+            <div class="total-table">
+                <table border="1">
+                    <tr>
+                        <th>Username</th>
+                        <th>Punteggio</th>
+                    </tr>
+                    {% for row in total_table_data %}
+                        <tr>
+                            <td>{{ row[1] }}</td>
+                            <td>{{ row[0] }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div>
+                {{ plot_html | safe }}
+            </div>
+        </div>
+    </div>
 
-    <!-- Button to log out -->
+    <a href="{{ url_for('insert_page.insert') }}"><button>Inserisci</button></a>
+
     <a href="{{ url_for('logout_page.logout') }}"><button>Log Out</button></a>
 </body>
 </html>
+
