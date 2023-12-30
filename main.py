@@ -6,7 +6,7 @@ from flask_login import LoginManager, current_user
 from lib.models import db, User
 from lib.config import create_app
 
-app = create_app()
+app = create_app(url_base_pathname="/wpn")
 
 @app.route("/")
 def default_page():
