@@ -35,7 +35,7 @@ def insert():
             existing_entry.w = form.w.data
             existing_entry.p = form.p.data
             existing_entry.n = form.n.data
-            flash("Risultati aggiornati correttamente!", "info")
+            flash("Risultati aggiornati correttamente", "info")
         else:
             entry = Entry(
                 user_id=current_user.id,
@@ -45,7 +45,7 @@ def insert():
                 n=form.n.data
             )
             db.session.add(entry)
-            flash("Risultati inseriti correttamente!", "success")
+            flash("Risultati inseriti correttamente", "success")
 
         db.session.commit()
 
