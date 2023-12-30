@@ -5,7 +5,6 @@ def create_app():
     app = Flask(__name__)
     app.config["SECRET_KEY"] = load_secret_key()
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
-    app.config['APPLICATION_ROOT'] = '/wpn'
 
     # register the database
     from .models import db
