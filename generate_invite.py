@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import sys
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import secrets
@@ -23,7 +24,12 @@ def generate_invite_code():
     db.session.commit()
 
 if __name__ == '__main__':
+    if len(sys.argv) == 2:
+        n = int(sys.argv[1])
+    else:
+        n = 1
     with app.app_context():
         db.create_all()
-        generate_invite_code()
-        print("Invite code generated and added to the database.")
+        for _ in range(n):
+            generate_invite_code()
+        print("Invite codes generated and added to the database.")
