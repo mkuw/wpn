@@ -20,7 +20,7 @@ def parse_args():
     parser.add_argument("--fine", type=str, help="Data di fine")
     parser.add_argument("--moltiplicatori", nargs="*", type=str,
         help='Sequenza di stringhe con data e moltiplicatore '
-        'ad esempio "31.12.2023 2.0"')
+        'ad esempio "31/12/2023 2.0"')
     parser.add_argument("--elimina", action="store_true",
         help="Elimina la stagione.")
     args = parser.parse_args()

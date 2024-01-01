@@ -20,8 +20,10 @@ def get_users_in_competition(entries):
 def get_season_days(season):
     end_date = min(season.end_date, datetime.date.today())
     delta = end_date - season.start_date
-    datetime_list = [season.start_date + datetime.timedelta(days=i) for i in range(delta.days + 1)]
-    return datetime_list
+    past_days = [season.start_date + datetime.timedelta(days=i) for i in range(delta.days + 1)]
+    delta = season.end_date - season.start_date
+    all_days = [season.start_date + datetime.timedelta(days=i) for i in range(delta.days + 1)]
+    return past_days, all_days
 
 @status_page.route('/status', methods=['GET', 'POST'])
 @login_required
@@ -30,7 +32,7 @@ def status():
     entries = get_entries_for_season(season)
 
     users = get_users_in_competition(entries)
-    days = get_season_days(season)
+    past_days, all_days = get_season_days(season)
 
     season_entries = {}
     for entry in entries:
@@ -44,7 +46,7 @@ def status():
 
     table_data = []
     table_colors = []
-    for day in days:
+    for day in all_days:
         date_string = day.strftime("%d/%m")
         set_date = False
         for username in users:
@@ -62,25 +64,38 @@ def status():
                 w = entry.w
                 p = entry.p
                 n = entry.n
-            else:
+            elif day < datetime.date.today():
                 w = 8
                 p = 8
                 n = 8
-            row.append(w)
+            else:
+                w = np.nan
+                p = np.nan
+                n = np.nan
+            if np.isnan(w):
+                row.append("")
+            else:
+                row.append(w)
             if w == 8:
                 row_colors.append("bad")
             elif w <= 2:
                 row_colors.append("good")
             else:
                 row_colors.append("normal")
-            row.append(p)
+            if np.isnan(p):
+                row.append("")
+            else:
+                row.append(p)
             if p == 8:
                 row_colors.append("bad")
             elif p <= 2:
                 row_colors.append("good")
             else:
                 row_colors.append("normal")
-            row.append(n)
+            if np.isnan(n):
+                row.append("")
+            else:
+                row.append(n)
             if n == 8:
                 row_colors.append("bad")
             elif n <= 2:
@@ -89,7 +104,10 @@ def status():
                 row_colors.append("normal")
 
             total = w + p + n
-            row.append(total)
+            if np.isnan(total):
+                row.append("")
+            else:
+                row.append(total)
             row_colors.append("normal")
 
             key = day.strftime("%d/%m/%Y")
@@ -108,7 +126,10 @@ def status():
             else:
                 row_colors.append("normal")
             points = (w + p + n)*multiplier
-            row.append(points)
+            if np.isnan(points):
+                row.append("")
+            else:
+                row.append(points)
             table_data.append(row)
             table_colors.append(row_colors)
 
@@ -119,13 +140,14 @@ def status():
         data = np.array(data)
         data -= 12
         data = np.cumsum(data)
-        fig.add_trace(go.Scatter(x=days, y=data, mode="lines", name=username))
+        fig.add_trace(go.Scatter(x=all_days, y=data, mode="lines", name=username))
     fig.update_layout(title_text='Montagne russe WPN', xaxis_title='Data', yaxis_title='Punti')
 
     plot_html = fig.to_html(full_html=False)
 
     totals = []
     for username, data in points_by_user.items():
+        data = np.nan_to_num(data)
         totals.append([sum(data), username])
 
     start_date = season.start_date.strftime("%d/%m")
