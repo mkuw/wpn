@@ -140,7 +140,7 @@ def status():
         data = np.array(data)
         data -= 12
         data = np.cumsum(data)
-        fig.add_trace(go.Scatter(x=all_days, y=data, mode="lines", name=username))
+        fig.add_trace(go.Scatter(x=all_days, y=data, mode="lines+markers", name=username))
     fig.update_layout(title_text='Montagne russe WPN', xaxis_title='Data', yaxis_title='Punti')
 
     plot_html = fig.to_html(full_html=False)
