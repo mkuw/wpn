@@ -30,8 +30,32 @@ def parse_args():
 def parse_date(date_string):
     return datetime.datetime.strptime(date_string, "%d/%m/%Y").date()
 
+def print_season(season):
+    print(season.title)
+    print(season.start_date)
+    print(season.end_date)
+    print(season.multipliers)
+
 def modify_season(season, args):
     print("La stagione è già presente, verrà modificata")
+    print("Versione già presente")
+    print_season(season)
+    if args.inizio is not None:
+        season.start_date = parse_date(args.inizio)
+    if args.fine is not None:
+        season.end_date = parse_date(args.fine)
+    if args.moltiplicatori is not None:
+        multipliers = {}
+        for multiplier in args.moltiplicatori:
+            tokens = multiplier.split()
+            date = parse_date(tokens[0])
+            factor = float(tokens[1])
+            key = date.strftime("%d/%m/%Y")
+            multipliers[key] = factor
+        season.multipliers = multipliers
+    db.session.commit()
+    print("Versione aggiornata")
+    print_season(season)
 
 def add_season(args):
     print("La stagione non è presente, verrà aggiunta")
