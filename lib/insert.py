@@ -21,7 +21,7 @@ class CompetitionForm(FlaskForm):
         validators=[DataRequired(), NumberRange(min=1, max=8)])
     n = IntegerField("N",
         validators=[DataRequired(), NumberRange(min=1, max=8)])
-    user = SelectField("User", coerce=int)
+    user = SelectField("User", coerce=int, default=current_user)
     submit = SubmitField("Inserisci")
 
     def set_user_choices(self, users):
