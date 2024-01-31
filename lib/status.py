@@ -43,12 +43,21 @@ def status():
     points_by_user = {}
     for user in users:
         points_by_user[user] = []
+    multipliers = []
 
     table_data = []
     table_colors = []
     for day in all_days:
         date_string = day.strftime("%d/%m")
         set_date = False
+
+        key = day.strftime("%d/%m/%Y")
+        if key in season.multipliers:
+            multiplier = season.multipliers[key]
+        else:
+            multiplier = 1.0
+        multipliers.append(multiplier)
+
         for username in users:
             row = []
             row_colors = ["normal", "normal"]
@@ -110,11 +119,6 @@ def status():
                 row.append(total)
             row_colors.append("normal")
 
-            key = day.strftime("%d/%m/%Y")
-            if key in season.multipliers:
-                multiplier = season.multipliers[key]
-            else:
-                multiplier = 1.0
             if multiplier > 1.0:
                 row_colors.append("bad")
             else:
@@ -136,9 +140,10 @@ def status():
             points_by_user[username].append(points)
 
     fig = make_subplots(rows=1, cols=1)
+    multipliers = np.array(multipliers)
     for username, data in points_by_user.items():
         data = np.array(data)
-        data -= 12
+        data -= 12*multipliers
         data = np.cumsum(data)
         fig.add_trace(go.Scatter(x=all_days, y=data, mode="lines+markers", name=username))
     fig.update_layout(title_text='Montagne russe WPN', xaxis_title='Data', yaxis_title='Punti')
