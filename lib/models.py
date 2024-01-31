@@ -84,6 +84,7 @@ def get_podium(season):
     entries = get_entries_for_season(season)
     users = get_users_in_competition(entries)
     multipliers = get_multipliers(season)
+    _, all_days = get_season_days(season)
 
     season_entries = {}
     for entry in entries:
@@ -91,12 +92,12 @@ def get_podium(season):
         username = get_user_by_id(entry.user_id).username
         season_entries[f"{date_string}_{username}"] = entry
 
-    points_by_user = {}
+    total_points_by_user = {}
     for user in users:
         total_points_by_user[user] = 0.0
 
-    for multiplier, day in zip(multipliers, day):
-        date_string = entry.date.strftime("%d/%m")
+    for multiplier, day in zip(multipliers, all_days):
+        date_string = day.strftime("%d/%m")
         for username in users:
             key = f"{date_string}_{username}"
             if key in season_entries:
@@ -106,4 +107,23 @@ def get_podium(season):
                 total = 24
             total *= multiplier
             total_points_by_user[username] += total
-    print(total_points_by_user)
+
+    sorted_users = sorted(total_points_by_user.items(), key=lambda x: x[1])
+    podium = []
+
+    # Handle ties by keeping track of points
+    current_points = None
+    current_position = 0
+
+    for user, points in sorted_users:
+        if points != current_points:
+            current_points = points
+            current_position += 1
+
+        podium.append({"user": user, "position": current_position, "points": points})
+
+    return podium
+
+
+def get_all_season():
+    return Season.query.all()

@@ -19,7 +19,7 @@ def status():
     entries = get_entries_for_season(season)
 
     users = get_users_in_competition(entries)
-    past_days, all_days = get_season_days(season)
+    _, all_days = get_season_days(season)
     multipliers = get_multipliers(season)
 
     season_entries = {}

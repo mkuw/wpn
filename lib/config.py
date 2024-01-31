@@ -24,6 +24,9 @@ def create_app():
     from .status import status_page
     app.register_blueprint(status_page, url_prefix="/")
 
+    from .leaderboard import leaderboard_page
+    app.register_blueprint(leaderboard_page, url_prefix="/")
+
     return app
 
 def print_routes(app):
