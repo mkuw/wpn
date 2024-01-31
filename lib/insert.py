@@ -14,7 +14,7 @@ insert_page = Blueprint("insert_page", __name__, template_folder="../templates")
 class CompetitionForm(FlaskForm):
     date = DateField("Date",
         validators=[DataRequired()],
-        default=datetime.today())
+        default=datetime.today)
     w = IntegerField("W",
         validators=[DataRequired(), NumberRange(min=1, max=8)])
     p = IntegerField("P",
