@@ -7,23 +7,10 @@ from flask_login import login_required
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
-from .models import Season, get_entries_for_season, get_user_by_id
+from .models import Season, get_entries_for_season, get_user_by_id, \
+    get_users_in_competition, get_season_days, get_multipliers
 
 status_page = Blueprint("status_page", __name__, template_folder="../templates")
-
-def get_users_in_competition(entries):
-    users = set()
-    for entry in entries:
-        users.add(get_user_by_id(entry.user_id).username)
-    return list(users)
-
-def get_season_days(season):
-    end_date = min(season.end_date, datetime.date.today())
-    delta = end_date - season.start_date
-    past_days = [season.start_date + datetime.timedelta(days=i) for i in range(delta.days + 1)]
-    delta = season.end_date - season.start_date
-    all_days = [season.start_date + datetime.timedelta(days=i) for i in range(delta.days + 1)]
-    return past_days, all_days
 
 @status_page.route('/status', methods=['GET', 'POST'])
 @login_required
@@ -33,6 +20,7 @@ def status():
 
     users = get_users_in_competition(entries)
     past_days, all_days = get_season_days(season)
+    multipliers = get_multipliers(season)
 
     season_entries = {}
     for entry in entries:
@@ -43,20 +31,12 @@ def status():
     points_by_user = {}
     for user in users:
         points_by_user[user] = []
-    multipliers = []
 
     table_data = []
     table_colors = []
-    for day in all_days:
+    for multiplier, day in zip(multipliers, all_days):
         date_string = day.strftime("%d/%m")
         set_date = False
-
-        key = day.strftime("%d/%m/%Y")
-        if key in season.multipliers:
-            multiplier = season.multipliers[key]
-        else:
-            multiplier = 1.0
-        multipliers.append(multiplier)
 
         for username in users:
             row = []

@@ -53,3 +53,57 @@ def get_user_by_id(user_id):
 
 def get_season_by_title(season_title):
     return Season.query.filter_by(title=season_title).first()
+
+def get_users_in_competition(entries):
+    users = set()
+    for entry in entries:
+        users.add(get_user_by_id(entry.user_id).username)
+    return list(users)
+
+def get_season_days(season):
+    end_date = min(season.end_date, datetime.date.today())
+    delta = end_date - season.start_date
+    past_days = [season.start_date + datetime.timedelta(days=i) for i in range(delta.days + 1)]
+    delta = season.end_date - season.start_date
+    all_days = [season.start_date + datetime.timedelta(days=i) for i in range(delta.days + 1)]
+    return past_days, all_days
+
+def get_multipliers(season):
+    _, all_days = get_season_days(season)
+    multipliers = []
+    for day in all_days:
+        key = day.strftime("%d/%m/%Y")
+        if key in season.multipliers:
+            multiplier = season.multipliers[key]
+        else:
+            multiplier = 1.0
+        multipliers.append(multiplier)
+    return multipliers
+
+def get_podium(season):
+    entries = get_entries_for_season(season)
+    users = get_users_in_competition(entries)
+    multipliers = get_multipliers(season)
+
+    season_entries = {}
+    for entry in entries:
+        date_string = entry.date.strftime("%d/%m")
+        username = get_user_by_id(entry.user_id).username
+        season_entries[f"{date_string}_{username}"] = entry
+
+    points_by_user = {}
+    for user in users:
+        total_points_by_user[user] = 0.0
+
+    for multiplier, day in zip(multipliers, day):
+        date_string = entry.date.strftime("%d/%m")
+        for username in users:
+            key = f"{date_string}_{username}"
+            if key in season_entries:
+                entry = season_entries[key]
+                total = entry.w + entry.p + entry.n
+            else:
+                total = 24
+            total *= multiplier
+            total_points_by_user[username] += total
+    print(total_points_by_user)
