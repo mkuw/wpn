@@ -4,7 +4,7 @@ import datetime
 import argparse
 
 from flask import Flask
-from lib.models import db, Season, get_season_by_title
+from lib.models import db, Season
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
@@ -85,7 +85,7 @@ if __name__ == "__main__":
 
     with app.app_context():
         db.create_all()
-        season = get_season_by_title(args.titolo)
+        season = Season.get_season_by_title(args.titolo)
         if season:
             if args.elimina:
                 remove_season(season)

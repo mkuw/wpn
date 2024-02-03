@@ -13,6 +13,10 @@ class User(db.Model, UserMixin):
     def is_active(self):
         return self.is_enabled
 
+    @staticmethod
+    def get_user_by_id(user_id):
+        return User.query.get(int(user_id))
+
 class InviteCode(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(50), unique=True, nullable=False)
@@ -42,22 +46,21 @@ class Season(db.Model):
     @staticmethod
     def get_current_season():
         today = datetime.datetime.today().date()
+        today = datetime.datetime(2024, 1, 25)
         return Season.query.filter(Season.start_date <= today, Season.end_date >= today).first()
+
+    @staticmethod
+    def get_season_by_title(season_title):
+        return Season.query.filter_by(title=season_title).first()
 
 def get_entries_for_season(season):
     return Entry.query.filter(
         Entry.date.between(season.start_date, season.end_date)).all()
 
-def get_user_by_id(user_id):
-    return User.query.get(int(user_id))
-
-def get_season_by_title(season_title):
-    return Season.query.filter_by(title=season_title).first()
-
 def get_users_in_competition(entries):
     users = set()
     for entry in entries:
-        users.add(get_user_by_id(entry.user_id).username)
+        users.add(User.get_user_by_id(entry.user_id).username)
     return list(users)
 
 def get_season_days(season):
@@ -89,7 +92,7 @@ def get_podium(season):
     season_entries = {}
     for entry in entries:
         date_string = entry.date.strftime("%d/%m")
-        username = get_user_by_id(entry.user_id).username
+        username = User.get_user_by_id(entry.user_id).username
         season_entries[f"{date_string}_{username}"] = entry
 
     total_points_by_user = {}

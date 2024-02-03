@@ -7,7 +7,7 @@ from flask_login import login_required
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
-from .models import Season, get_entries_for_season, get_user_by_id, \
+from .models import User, Season, get_entries_for_season, \
     get_users_in_competition, get_season_days, get_multipliers
 
 status_page = Blueprint("status_page", __name__, template_folder="../templates")
@@ -25,7 +25,7 @@ def status():
     season_entries = {}
     for entry in entries:
         date_string = entry.date.strftime("%d/%m")
-        username = get_user_by_id(entry.user_id).username
+        username = User.get_user_by_id(entry.user_id).username
         season_entries[f"{date_string}_{username}"] = entry
 
     points_by_user = {}
