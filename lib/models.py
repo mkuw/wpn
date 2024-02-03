@@ -59,7 +59,6 @@ class Season(db.Model):
     def get_current_season():
         """Get the current season based on today's date."""
         today = datetime.datetime.today().date()
-        today = datetime.datetime(2024, 1, 25)
         return Season.query.filter(Season.start_date <= today, Season.end_date >= today).first()
 
     @staticmethod
