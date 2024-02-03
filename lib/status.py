@@ -7,26 +7,19 @@ from flask_login import login_required
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 
-from .models import User, Season, get_entries_for_season, \
-    get_users_in_competition, get_season_days, get_multipliers
+from .models import Season, SeasonService
 
 status_page = Blueprint("status_page", __name__, template_folder="../templates")
 
 @status_page.route('/status', methods=['GET', 'POST'])
 @login_required
 def status():
-    season = Season.get_current_season()
-    entries = get_entries_for_season(season)
+    season = SeasonService(Season.get_current_season())
+    entries = season.get_entries_dictionary()
 
-    users = get_users_in_competition(entries)
-    _, all_days = get_season_days(season)
-    multipliers = get_multipliers(season)
-
-    season_entries = {}
-    for entry in entries:
-        date_string = entry.date.strftime("%d/%m")
-        username = User.get_user_by_id(entry.user_id).username
-        season_entries[f"{date_string}_{username}"] = entry
+    users = season.get_users_in_competition()
+    season_days = season.get_season_days()
+    multipliers = season.get_multipliers()
 
     points_by_user = {}
     for user in users:
@@ -34,7 +27,7 @@ def status():
 
     table_data = []
     table_colors = []
-    for multiplier, day in zip(multipliers, all_days):
+    for multiplier, day in zip(multipliers, season_days):
         date_string = day.strftime("%d/%m")
         set_date = False
 
@@ -48,8 +41,8 @@ def status():
                 row.append("")
             row.append(username)
             key = f"{date_string}_{username}"
-            if key in season_entries:
-                entry = season_entries[key]
+            if key in entries:
+                entry = entries[key]
                 w = entry.w
                 p = entry.p
                 n = entry.n
@@ -125,7 +118,7 @@ def status():
         data = np.array(data)
         data -= 12*multipliers
         data = np.cumsum(data)
-        fig.add_trace(go.Scatter(x=all_days, y=data, mode="lines+markers", name=username))
+        fig.add_trace(go.Scatter(x=season_days, y=data, mode="lines+markers", name=username))
     fig.update_layout(title_text='Montagne russe WPN', xaxis_title='Data', yaxis_title='Punti')
 
     plot_html = fig.to_html(full_html=False)
@@ -135,10 +128,10 @@ def status():
         data = np.nan_to_num(data)
         totals.append([sum(data), username])
 
-    start_date = season.start_date.strftime("%d/%m")
-    end_date = season.end_date.strftime("%d/%m")
+    start_date, end_date = season.get_start_end_dates()
+    title = season.get_title()
 
-    return render_template("status.html", title=season.title,
+    return render_template("status.html", title=title,
         table_data=table_data, table_colors=table_colors,
         plot_html=plot_html, total_table_data=sorted(totals),
         start_date=start_date, end_date=end_date)
