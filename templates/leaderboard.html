@@ -1,5 +1,22 @@
 <!-- status.html -->
 <!DOCTYPE html>
+<style>
+.gold-cell {
+    background-color: #ffd700;
+    color: #000000;
+}
+
+.silver-cell {
+    background-color: #c0c0c0;
+    color: #000000;
+}
+
+.bronze-cell {
+    background-color: #cd7f32;
+    color: #000000;
+}
+</style>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,7 +30,53 @@
     </style>
 </head>
 <body>
-    Leaderboard
+    <h2>Medagliere</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Contendente</th>
+                <th>Oro</th>
+                <th>Argento</th>
+                <th>Bronzo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user_row in user_table %}
+                <tr>
+                    <td>{{ user_row[0] }}</td>
+                    <td class="gold-cell">{{ user_row[1] }}</td>
+                    <td class="silver-cell">{{ user_row[2] }}</td>
+                    <td class="bronze-cell">{{ user_row[3] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Riepilogo stagioni</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Titolo</th>
+                <th>Inizio</th>
+                <th>Fine</th>
+                <th>Oro</th>
+                <th>Argento</th>
+                <th>Bronzo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for season_row in season_table %}
+                <tr>
+                    <td>{{ season_row[0] }}</td>
+                    <td>{{ season_row[1] }}</td>
+                    <td>{{ season_row[2] }}</td>
+                    <td class="gold-cell">{{ season_row[3] }}</td>
+                    <td class="silver-cell">{{ season_row[4] }}</td>
+                    <td class="bronze-cell">{{ season_row[5] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <a href="{{ url_for('insert_page.insert') }}"><button>Inserisci</button></a>
 
