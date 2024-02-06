@@ -12,6 +12,7 @@ from .models import db, Entry, User
 insert_page = Blueprint("insert_page", __name__, template_folder="../templates")
 
 class CompetitionForm(FlaskForm):
+
     date = DateField("Date",
         validators=[DataRequired()],
         default=datetime.today)
@@ -21,18 +22,20 @@ class CompetitionForm(FlaskForm):
         validators=[DataRequired(), NumberRange(min=1, max=8)])
     n = IntegerField("N",
         validators=[DataRequired(), NumberRange(min=1, max=8)])
-    user = SelectField("User", coerce=int, default=current_user)
+    user = SelectField("User")
     submit = SubmitField("Inserisci")
 
-    def set_user_choices(self, users):
+    def set_user_choices(self, users, default_user):
         self.user.choices = [(user.id, user.username) for user in users]
+        self.user.default = default_user.id
+        self.process()
 
 @insert_page.route("/insert", methods=["GET", "POST"])
 @login_required
 def insert():
     form = CompetitionForm()
     users = User.query.all()
-    form.set_user_choices(users)
+    form.set_user_choices(users, current_user)
 
     if form.validate_on_submit():
         user = form.user.data
