@@ -26,20 +26,25 @@ class CompetitionForm(FlaskForm):
     submit = SubmitField("Inserisci")
 
     def set_user_choices(self, users, default_user):
-        self.user.choices = [(user.id, user.username) for user in users]
-        self.user.default = default_user.id
-        self.process()
+        # we put first the active user
+        choices = [default_user.username]
+        for user in users:
+            if user.id != default_user.id:
+                choices.append(user.username)
+        self.user.choices = choices
 
 @insert_page.route("/insert", methods=["GET", "POST"])
 @login_required
 def insert():
-    form = CompetitionForm()
     users = User.query.all()
+    form = CompetitionForm()
     form.set_user_choices(users, current_user)
 
     if form.validate_on_submit():
-        user = form.user.data
-        existing_entry = Entry.query.filter_by(user_id=user, date=form.date.data).first()
+        username = form.user.data
+        user_id = User.get_user_by_name(username).id
+
+        existing_entry = Entry.query.filter_by(user_id=user_id, date=form.date.data).first()
 
         if existing_entry:
             existing_entry.w = form.w.data
@@ -48,7 +53,7 @@ def insert():
             flash("Risultati aggiornati correttamente", "info")
         else:
             entry = Entry(
-                user_id=user,
+                user_id=user_id,
                 date=form.date.data,
                 w=form.w.data,
                 p=form.p.data,

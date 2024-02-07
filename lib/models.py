@@ -22,6 +22,12 @@ class User(db.Model, UserMixin):
         """Get the user by the id."""
         return User.query.get(int(user_id))
 
+    @staticmethod
+    def get_user_by_name(name):
+        """Get the user by the name."""
+        return User.query.filter_by(username=name).first()
+
+
 class InviteCode(db.Model):
     """Sql model for the invite code."""
     id = db.Column(db.Integer, primary_key=True)
@@ -119,6 +125,10 @@ class SeasonService:
         season_entries = {}
         for entry in self.get_entries_for_season():
             date_string = entry.date.strftime("%d/%m")
+            #if entry.user_id == 0 or isinstance(entry.user_id, str):
+            #    db.session.delete(entry)
+            #    db.session.commit()
+            #    raise ValueError("Removed a broken entry")
             username = User.get_user_by_id(entry.user_id).username
             season_entries[f"{date_string}_{username}"] = entry
         return season_entries
