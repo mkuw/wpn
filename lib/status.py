@@ -114,12 +114,19 @@ def status():
 
     fig = make_subplots(rows=1, cols=1)
     multipliers = np.array(multipliers)
+    maxes = []
+    mins = []
     for username, data in points_by_user.items():
         data = np.array(data)
         data -= 12*multipliers
         data = np.cumsum(data)
         fig.add_trace(go.Scatter(x=season_days, y=data, mode="lines+markers", name=username))
-    fig.update_layout(title_text='Montagne russe WPN', xaxis_title='Data', yaxis_title='Punti')
+        maxes.append(np.nanmax(data))
+        mins.append(np.nanmin(data))
+    ymax = np.min(maxes) + 0.2*np.std(maxes)
+    ymin = 1.1*np.min(mins)
+    fig.update_layout(title_text='Montagne russe WPN', xaxis_title='Data',
+        yaxis_title='Punti', yaxis_range=[ymin, ymax])
 
     plot_html = fig.to_html(full_html=False)
 
