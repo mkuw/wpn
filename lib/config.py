@@ -27,6 +27,9 @@ def create_app():
     from .leaderboard import leaderboard_page
     app.register_blueprint(leaderboard_page, url_prefix="/")
 
+    from .change_password import change_password_page
+    app.register_blueprint(change_password_page, url_prefix="/")
+
     return app
 
 def print_routes(app):
