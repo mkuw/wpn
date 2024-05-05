@@ -16,7 +16,7 @@ status_page = Blueprint("status_page", __name__, template_folder="../templates")
 def status():
     query_date = request.args.get('date')
     if query_date:
-        date = datetime.datetime.strptime(query_date, '%d-%m-%Y').date()
+        date = datetime.datetime.strptime(query_date, '%d/%m/%Y').date()
         season = SeasonService(Season.get_season_by_date(date))
     else:
         season = SeasonService(Season.get_current_season())

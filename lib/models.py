@@ -142,8 +142,8 @@ class SeasonService:
 
     def get_start_end_dates(self):
         """Get the season start and end dates."""
-        start_date = self.season.start_date.strftime("%d/%m")
-        end_date = self.season.end_date.strftime("%d/%m")
+        start_date = self.season.start_date.strftime("%d/%m/%Y")
+        end_date = self.season.end_date.strftime("%d/%m/%Y")
         return start_date, end_date
 
     def get_title(self):
@@ -196,7 +196,7 @@ class SeasonService:
                 if key in season_entries:
                     entry = season_entries[key]
                 else:
-                    entry = self.get_penalty(date, username)
+                    entry = self.get_penalty(day, username)
 
                 total = entry.w + entry.p + entry.n
                 total *= multiplier
