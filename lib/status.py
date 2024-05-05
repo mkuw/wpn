@@ -1,7 +1,7 @@
 import datetime
 import numpy as np
 
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 from flask_login import login_required
 
 import plotly.graph_objs as go
@@ -14,7 +14,13 @@ status_page = Blueprint("status_page", __name__, template_folder="../templates")
 @status_page.route('/status', methods=['GET', 'POST'])
 @login_required
 def status():
-    season = SeasonService(Season.get_current_season())
+    query_date = request.args.get('date')
+    if query_date:
+        date = datetime.datetime.strptime(query_date, '%d-%m-%Y').date()
+        season = SeasonService(Season.get_season_by_date(date))
+    else:
+        season = SeasonService(Season.get_current_season())
+
     if season.is_none():
         return render_template("no_season.html")
     entries = season.get_entries_dictionary()
