@@ -15,6 +15,8 @@ status_page = Blueprint("status_page", __name__, template_folder="../templates")
 @login_required
 def status():
     season = SeasonService(Season.get_current_season())
+    if season.is_none():
+        return render_template("no_season.html")
     entries = season.get_entries_dictionary()
 
     users = season.get_users_in_competition()

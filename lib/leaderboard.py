@@ -44,14 +44,15 @@ class UserMedals:
 @login_required
 def leaderboard():
     seasons = [SeasonService(season) for season in Season.get_all_season()]
-    current_season = Season.get_current_season().title
+    current_season = Season.get_current_season()
 
     users_medals = UserMedals()
 
     season_table = []
     for season in seasons:
-        if season.get_title() == current_season:
-            continue
+        if current_season:
+            if season.get_title() == current_season.title:
+                continue
         row = []
         row.append(season.get_title())
         row.extend(season.get_start_end_dates())

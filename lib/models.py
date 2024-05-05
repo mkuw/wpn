@@ -85,6 +85,9 @@ class SeasonService:
     def __init__(self, season):
         self.season = season
 
+    def is_none(self):
+        return self.season is None
+
     def get_entries_for_season(self):
         """Return all the entries for the season."""
         return Entry.query.filter(
