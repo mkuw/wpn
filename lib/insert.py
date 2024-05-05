@@ -50,7 +50,7 @@ def insert():
             existing_entry.w = form.w.data
             existing_entry.p = form.p.data
             existing_entry.n = form.n.data
-            flash("Risultati aggiornati correttamente", "info")
+            flash("Risultati aggiornati correttamente", "success")
         else:
             entry = Entry(
                 user_id=user_id,

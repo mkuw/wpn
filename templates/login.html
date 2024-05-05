@@ -7,11 +7,15 @@
 </head>
 <body>
     <h2>Login</h2>
-    {% with messages = get_flashed_messages() %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <ul>
-                {% for message in messages %}
-                    <li style="color: {% if 'danger' in message %}red{% else %}green{% endif %}">{{ message }}</li>
+                {% for category, message in messages %}
+                    {% if category == 'danger' %}
+                        <li style="color: red;">{{ message }}</li>
+                    {% else %}
+                        <li style="color: green;">{{ message }}</li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         {% endif %}
