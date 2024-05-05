@@ -49,9 +49,10 @@ def status():
                 p = entry.p
                 n = entry.n
             elif day < datetime.date.today():
-                w = 8
-                p = 8
-                n = 8
+                entry = season.get_penalty(day, username)
+                w = entry.w
+                p = entry.p
+                n = entry.n
             else:
                 w = np.nan
                 p = np.nan
@@ -60,7 +61,7 @@ def status():
                 row.append("")
             else:
                 row.append(w)
-            if w == 8:
+            if w >= 6:
                 row_colors.append("bad")
             elif w <= 2:
                 row_colors.append("good")
@@ -70,7 +71,7 @@ def status():
                 row.append("")
             else:
                 row.append(p)
-            if p == 8:
+            if p >= 6:
                 row_colors.append("bad")
             elif p <= 2:
                 row_colors.append("good")
@@ -80,7 +81,7 @@ def status():
                 row.append("")
             else:
                 row.append(n)
-            if n == 8:
+            if n >= 6:
                 row_colors.append("bad")
             elif n <= 2:
                 row_colors.append("good")

@@ -146,6 +146,32 @@ class SeasonService:
         """Get the season title."""
         return self.season.title
 
+    def get_penalty(self, date, username):
+        users = self.get_users_in_competition()
+        season_entries = self.get_entries_dictionary()
+        user_id = User.get_user_by_name(username).id
+        date_string = date.strftime("%d/%m")
+        if self.season.start_date >= datetime.date(2024, 4, 30):
+            w = []
+            p = []
+            n = []
+            for username in users:
+                key = f"{date_string}_{username}"
+                if key in season_entries:
+                    entry = season_entries[key]
+                    w.append(entry.w)
+                    p.append(entry.p)
+                    n.append(entry.p)
+            penalty_w = min(max(w) + 1, 8)
+            penalty_p = min(max(p) + 1, 8)
+            penalty_n = min(max(n) + 1, 8)
+        else:
+            penalty_w = 8
+            penalty_p = 8
+            penalty_n = 8
+        return Entry(user_id=user_id, date=date,
+            w=penalty_w, p=penalty_p, n=penalty_n)
+
     def get_leaderboard(self):
         """Get the scores as a list of dictionaries, each
         containing user, points and position."""
@@ -165,9 +191,10 @@ class SeasonService:
                 key = f"{date_string}_{username}"
                 if key in season_entries:
                     entry = season_entries[key]
-                    total = entry.w + entry.p + entry.n
                 else:
-                    total = 24
+                    entry = self.get_penalty(date, username)
+
+                total = entry.w + entry.p + entry.n
                 total *= multiplier
                 total_points_by_user[username] += total
 
