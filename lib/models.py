@@ -165,7 +165,7 @@ class SeasonService:
                     entry = season_entries[key]
                     w.append(entry.w)
                     p.append(entry.p)
-                    n.append(entry.p)
+                    n.append(entry.n)
             penalty_w = min(max(w) + 1, 8)
             penalty_p = min(max(p) + 1, 8)
             penalty_n = min(max(n) + 1, 8)
