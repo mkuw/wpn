@@ -77,15 +77,15 @@ def status():
             if np.isnan(w):
                 row.append("")
             else:
-                row.append(w)
+                row.append(f"{w:d}")
             if np.isnan(p):
                 row.append("")
             else:
-                row.append(p)
+                row.append(f"{p:d}")
             if np.isnan(n):
                 row.append("")
             else:
-                row.append(n)
+                row.append(f"{n:d}")
 
             row_colors.extend(colors)
 
@@ -95,14 +95,14 @@ def status():
                 row.append("")
                 row_colors.append("normal")
             else:
-                row.append(total)
+                row.append(f"{total:d}")
                 if total > 20:
                     row_colors.append("bad")
                 else:
                     row_colors.append("normal")
 
             m = min(int((multiplier - 1.0)*10) + 1, 10)
-            row.append(multiplier)
+            row.append(f"{multiplier:6.3f}")
             row_colors.append(f"m{m}")
 
             row_colors.append("normal")
@@ -110,7 +110,7 @@ def status():
             if np.isnan(points):
                 row.append("")
             else:
-                row.append(points)
+                row.append(f"{points:6.3f}")
 
             table_data.append(row)
             table_colors.append(row_colors)
@@ -132,7 +132,8 @@ def status():
     totals = []
     for username, data in points_by_user.items():
         data = np.nan_to_num(data)
-        totals.append([sum(data), username])
+        total = sum(data)
+        totals.append([f"{total:6.3f}", username])
 
     start_date, end_date = season.get_start_end_dates()
     title = season.get_title()
