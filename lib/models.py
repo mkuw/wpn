@@ -166,9 +166,18 @@ class SeasonService:
                     w.append(entry.w)
                     p.append(entry.p)
                     n.append(entry.n)
-            penalty_w = min(max(w) + 1, 8)
-            penalty_p = min(max(p) + 1, 8)
-            penalty_n = min(max(n) + 1, 8)
+            if len(w) > 0:
+                penalty_w = min(max(w) + 1, 8)
+            else:
+                penalty_w = 8
+            if len(p) > 0:
+                penalty_p = min(max(p) + 1, 8)
+            else:
+                penalty_p = 8
+            if len(n) > 0:
+                penalty_n = min(max(n) + 1, 8)
+            else:
+                penalty_n = 8
         else:
             penalty_w = 8
             penalty_p = 8

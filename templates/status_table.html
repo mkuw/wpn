@@ -1,11 +1,45 @@
 <!-- status_table.html -->
 <style>
-    .red-cell {
+    .missing-cell {
+        background-color: #b0c4de;
+    }
+    .bad-cell {
         background-color: #ffcccc;
     }
-    .green-cell {
+    .good-cell {
         background-color: #ccffcc;
     }
+    .m1-cell {
+        color: #0c0786;
+    }
+    .m2-cell {
+        color: #3b039a;
+    }
+    .m3-cell {
+        color: #8405a6;
+    }
+    .m4-cell {
+        color: #6100a6;
+    }
+    .m5-cell {
+        color: #a31d99;
+    }
+    .m6-cell {
+        color: #bc3685;
+    }
+    .m7-cell {
+        color: #d25070;
+    }
+    .m8-cell {
+        color: #e56b5c;
+    }
+    .m9-cell {
+        color: #f38748;
+    }
+    .m10-cell {
+        color: #fca635;
+    }
+
 </style>
 
 <!-- Table header -->
@@ -26,9 +60,31 @@
         <tr>
             {% for cell in row %}
                 {% if table_colors[outer_loop.index0][loop.index0] == "bad" %}
-                    <td class="red-cell">{{ cell }}</td>
+                    <td class="bad-cell">{{ cell }}</td>
                 {% elif table_colors[outer_loop.index0][loop.index0] == "good" %}
-                    <td class="green-cell">{{ cell }}</td>
+                    <td class="good-cell">{{ cell }}</td>
+                {% elif table_colors[outer_loop.index0][loop.index0] == "missing" %}
+                    <td class="missing-cell">{{ cell }}</td>
+                {% elif table_colors[outer_loop.index0][loop.index0] == "m1" %}
+                    <td class="m1-cell">{{ cell }}</td>
+                {% elif table_colors[outer_loop.index0][loop.index0] == "m2" %}
+                    <td class="m2-cell">{{ cell }}</td>
+                {% elif table_colors[outer_loop.index0][loop.index0] == "m3" %}
+                    <td class="m3-cell">{{ cell }}</td>
+                {% elif table_colors[outer_loop.index0][loop.index0] == "m4" %}
+                    <td class="m4-cell">{{ cell }}</td>
+                {% elif table_colors[outer_loop.index0][loop.index0] == "m5" %}
+                    <td class="m5-cell">{{ cell }}</td>
+                {% elif table_colors[outer_loop.index0][loop.index0] == "m6" %}
+                    <td class="m6-cell">{{ cell }}</td>
+                {% elif table_colors[outer_loop.index0][loop.index0] == "m7" %}
+                    <td class="m7-cell">{{ cell }}</td>
+                {% elif table_colors[outer_loop.index0][loop.index0] == "m8" %}
+                    <td class="m8-cell">{{ cell }}</td>
+                {% elif table_colors[outer_loop.index0][loop.index0] == "m9" %}
+                    <td class="m9-cell">{{ cell }}</td>
+                {% elif table_colors[outer_loop.index0][loop.index0] == "m10" %}
+                    <td class="m10-cell">{{ cell }}</td>
                 {% else %}
                     <td>{{ cell }}</td>
                 {% endif %}
