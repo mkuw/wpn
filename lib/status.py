@@ -93,6 +93,7 @@ def status():
             total = w + p + n
             if np.isnan(total):
                 row.append("")
+                row_colors.append("normal")
             else:
                 row.append(total)
                 if total > 20:
