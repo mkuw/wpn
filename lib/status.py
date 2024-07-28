@@ -54,24 +54,6 @@ def status():
                 w = entry.w
                 p = entry.p
                 n = entry.n
-                if w >= 6:
-                    row_colors.append("bad")
-                elif w <= 2:
-                    row_colors.append("good")
-                else:
-                    row_colors.append("normal")
-                if p >= 6:
-                    row_colors.append("bad")
-                elif p <= 2:
-                    row_colors.append("good")
-                else:
-                    row_colors.append("normal")
-                if n >= 6:
-                    row_colors.append("bad")
-                elif n <= 2:
-                    row_colors.append("good")
-                else:
-                    row_colors.append("normal")
             elif day < datetime.date.today():
                 entry = season.get_penalty(day, username)
                 w = entry.w
@@ -84,16 +66,37 @@ def status():
                 n = np.nan
             if np.isnan(w):
                 row.append("")
+                row_colors.append("")
             else:
                 row.append(w)
+                if w >= 6:
+                    row_colors.append("bad")
+                elif w <= 2:
+                    row_colors.append("good")
+                else:
+                    row_colors.append("normal")
             if np.isnan(p):
                 row.append("")
+                row_colors.append("")
             else:
                 row.append(p)
+                if p >= 6:
+                    row_colors.append("bad")
+                elif p <= 2:
+                    row_colors.append("good")
+                else:
+                    row_colors.append("normal")
             if np.isnan(n):
                 row.append("")
+                row_colors.append("")
             else:
                 row.append(n)
+                if n >= 6:
+                    row_colors.append("bad")
+                elif n <= 2:
+                    row_colors.append("good")
+                else:
+                    row_colors.append("normal")
 
             total = w + p + n
             if np.isnan(total):
