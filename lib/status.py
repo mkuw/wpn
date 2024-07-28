@@ -54,61 +54,55 @@ def status():
                 w = entry.w
                 p = entry.p
                 n = entry.n
+                colors = []
+                for value in [w, p, n]:
+                    if value >= 6:
+                        colors.append("bad")
+                    elif value <= 2:
+                        colors.append("good")
+                    else:
+                        colors.append("normal")
             elif day < datetime.date.today():
                 entry = season.get_penalty(day, username)
                 w = entry.w
                 p = entry.p
                 n = entry.n
-                row_colors.extend(["missing", "missing", "missing"])
+                colors = ["missing", "missing", "missing"]
             else:
                 w = np.nan
                 p = np.nan
                 n = np.nan
+                colors = ["normal", "normal", "normal"]
+
             if np.isnan(w):
                 row.append("")
-                row_colors.append("")
             else:
                 row.append(w)
-                if w >= 6:
-                    row_colors.append("bad")
-                elif w <= 2:
-                    row_colors.append("good")
-                else:
-                    row_colors.append("normal")
             if np.isnan(p):
                 row.append("")
-                row_colors.append("")
             else:
                 row.append(p)
-                if p >= 6:
-                    row_colors.append("bad")
-                elif p <= 2:
-                    row_colors.append("good")
-                else:
-                    row_colors.append("normal")
             if np.isnan(n):
                 row.append("")
-                row_colors.append("")
             else:
                 row.append(n)
-                if n >= 6:
-                    row_colors.append("bad")
-                elif n <= 2:
-                    row_colors.append("good")
-                else:
-                    row_colors.append("normal")
 
+            row_colors.extend(colors)
+
+            # total
             total = w + p + n
             if np.isnan(total):
                 row.append("")
             else:
                 row.append(total)
-            row_colors.append("normal")
+                if total > 20:
+                    row_colors.append("bad")
+                else:
+                    row_colors.append("normal")
 
             m = min(int((multiplier - 1.0)*10) + 1, 10)
-            row_colors.append(f"m{m}")
-
             row.append(multiplier)
+            row_colors.append(f"m{m}")
 
             row_colors.append("normal")
             points = (w + p + n)*multiplier
@@ -116,6 +110,7 @@ def status():
                 row.append("")
             else:
                 row.append(points)
+
             table_data.append(row)
             table_colors.append(row_colors)
 
